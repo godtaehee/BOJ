@@ -1,0 +1,79 @@
+#include <string>
+#include <vector>
+#include <deque>
+#include <stack>
+#include <iostream>
+
+using namespace std;
+
+bool validChar(char x) {
+    if(x == '(' || x == '[' || x == '{')
+        return true;
+    return false;
+}
+
+bool validPair(char prev, char now) {
+    if(prev == '(' && now == ')')
+        return true;
+    else if(prev == '[' && now == ']')
+        return true;
+    else if(prev == '{' && now == '}')
+        return true;
+    return false;
+}
+
+bool judge(deque<char> q) {
+    
+    stack<char> stk;
+    stk.push(q.front());
+    q.pop_front();
+    while(!q.empty()) {
+        char x = q.front();
+        q.pop_front();
+        if(!stk.empty()) {
+            if(validPair(stk.top(), x)) {
+                stk.pop();
+            }
+            if(validChar(x))
+                stk.push(x);
+        }else {
+            stk.push(x);
+        }
+    }
+    
+    
+    
+    
+    if(stk.empty()) return true;
+    else return false;
+       
+  
+}
+
+int solution(string s) {
+    int answer = 0;
+    deque<char> q;
+    for(int i = 0; i < s.size(); i++) {
+        q.push_back(s[i]);
+    }
+    
+    for(int i = 0; i < s.size(); i++){
+        
+
+        if(i!= 0){
+            char tmp = q.front();
+            q.pop_front();
+            q.push_back(tmp);
+            
+        }
+
+        if(judge(q)){
+            answer+=1;
+        }
+        cout << '\n';
+        
+
+    }
+    
+    return answer;
+}
